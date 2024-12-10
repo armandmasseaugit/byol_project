@@ -54,7 +54,14 @@ create_environment:
 # PROJECT RULES                                                                 #
 #################################################################################
 
+# importing the data
+.PHONY: dataset
+dataset:
+	$(PYTHON_INTERPRETER) -m byol.dataset
 
+.PHONY: train
+train:
+	$(PYTHON_INTERPRETER) -m byol.modeling.train
 
 #################################################################################
 # Self Documenting Commands                                                     #
