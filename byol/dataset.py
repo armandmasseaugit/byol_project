@@ -1,39 +1,16 @@
-from torchvision.datasets import MNIST
-from torch.utils.data import DataLoader
-from .config import TRANSFORMS, BATCH_SIZE, SHUFFLE
+from torch.utils.data import DataLoader, Dataset
 
-class MnistDataset:
-    def __init__(self):
-        """
-            MNIST dataset ready for training.
+class BYOLDataset(Dataset):
+    def __init__(self, dataset, transform):
+        self.dataset = dataset
+        self.transform = transform
 
-            Attributes
-            ----------
+    def __len__(self):
+        return len(self.dataset)
 
-            Methods
-            -------
-            get_train_loader
-                get the train DataLoader.
-            get_test_loader
-                get the test DataLoader.
-        """
-        self.train_data = MNIST(root="data/raw", train=True, download=True, transform=TRANSFORMS)
-        self.test_data = MNIST(root="data/raw", train=False, download=True, transform=TRANSFORMS)
+    def __getitem__(self, idx):
+        image, label = self.dataset[idx]
+        view1 = self.transform(image) # We generate two views for the same image
+        view2 = self.transform(image)
+        return view1, view2, label
 
-        self.train_loader = DataLoader(
-            dataset=self.train_data, batch_size=BATCH_SIZE, shuffle=SHUFFLE
-        )
-        self.test_loader = DataLoader(
-            dataset=self.test_data, batch_size=BATCH_SIZE, shuffle=SHUFFLE
-        )
-
-    def get_train_loader(self):
-        return self.train_loader
-
-    def get_test_loader(self):
-        return self.test_loader
-
-
-if __name__ == "__main__":
-    m = MnistDataset()
-    print(m.get_train_loader())

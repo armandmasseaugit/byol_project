@@ -54,7 +54,6 @@ create_environment:
 # PROJECT RULES                                                                 #
 #################################################################################
 
-# importing the data
 .PHONY: dataset
 dataset:
 	$(PYTHON_INTERPRETER) -m byol.dataset
@@ -62,6 +61,22 @@ dataset:
 .PHONY: train
 train:
 	$(PYTHON_INTERPRETER) -m byol.modeling.train
+
+.PHONY: fine-tuning
+fine-tuning:
+	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
+
+.PHONY: test
+test:
+	$(PYTHON_INTERPRETER) -m byol.modeling.test
+
+.PHONY: all
+all:
+	#$(PYTHON_INTERPRETER) -m byol.modeling.train
+	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
+	$(PYTHON_INTERPRETER) -m byol.modeling.test
+
+
 
 #################################################################################
 # Self Documenting Commands                                                     #
