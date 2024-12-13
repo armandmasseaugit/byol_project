@@ -6,12 +6,12 @@ from torchvision.transforms.v2 import ToTensor
 
 from byol.dataset import BYOLDataset
 from byol.modeling.model import FineTunedBootstrapYourOwnLatent, Encoder
-from byol.config import (encoder, projector, predictor, loss_function, NUM_EPOCHS, transforms, BATCH_SIZE, SHUFFLE, TAU,
+from byol.config import (encoder, NUM_EPOCHS, BATCH_SIZE, SHUFFLE, TAU,
                          PATH_OF_THE_SAVED_MODEL_PARAMETERS, fine_tuning_mlp)
 import torch.optim as optim
 
 encoder = Encoder(encoder)
-encoder.load_state_dict(load('models/trained_byol_model.pth'), strict=False)
+encoder.load_state_dict(load(PATH_OF_THE_SAVED_MODEL_PARAMETERS), strict=False)
 for param in encoder.parameters():
     param.requires_grad = False
 

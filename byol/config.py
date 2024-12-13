@@ -70,7 +70,7 @@ def loss_function(x, y):
 ### Training parameters
 
 NUM_EPOCHS = 10
-PATH_OF_THE_SAVED_MODEL_PARAMETERS = 'models/trained_byol_model.pth'
+PATH_OF_THE_SAVED_MODEL_PARAMETERS = 'models/trained_byol_model.pth' # Encoder's parameters
 
 ### Testing parameters
 
