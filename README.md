@@ -51,6 +51,7 @@ computer vision mnist
     │
     ├── modeling                
     │   ├── __init__.py 
+    │   ├── model.py            <- Model definition
     │   ├── predict.py          <- Code to run model inference with trained models          
     │   └── train.py            <- Code to train models
     │
