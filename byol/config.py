@@ -6,15 +6,17 @@ import torch.nn as nn
 ### Data transformation parameters
 
 # The transformations of the dataset in order to create two views
-transforms = transforms.Compose([
-    transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
-    transforms.ToTensor(),
-    #transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # ImageNet parameters
-])
+transforms = transforms.Compose(
+    [
+        transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
+        transforms.ToTensor(),
+        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # ImageNet parameters
+    ]
+)
 
-BATCH_SIZE=64 #512
+BATCH_SIZE = 64  # 512
 
-SHUFFLE=True
+SHUFFLE = True
 
 ### Model parameters
 
@@ -38,7 +40,7 @@ encoder = nn.Sequential(
     nn.Linear(120, 64),
 )
 
-PROJECTION_DIM = 32 #>128 for the moment
+PROJECTION_DIM = 32  # >128 for the moment
 
 # Projector
 projector = nn.Sequential(
@@ -56,22 +58,23 @@ predictor = nn.Sequential(
 fine_tuning_mlp = nn.Sequential(
     nn.Linear(64, 32),
     nn.ReLU(),
-    nn.Linear(32, 10)
-    #nn.Softmax(dim=-1)
+    nn.Linear(32, 10),
+    # nn.Softmax(dim=-1)
 )
+
 
 # Loss function
 def loss_function(x, y):
     x = nn.functional.normalize(x, dim=-1)
     y = nn.functional.normalize(y, dim=-1)
-    return 2 - 2 * (x*y).sum(dim=-1)
+    return 2 - 2 * (x * y).sum(dim=-1)
 
 
 ### Training parameters
 
 NUM_EPOCHS = 10
-PATH_OF_THE_SAVED_MODEL_PARAMETERS = 'models/trained_byol_model.pth' # Encoder's parameters
+PATH_OF_THE_SAVED_MODEL_PARAMETERS = "models/trained_byol_model.pth"  # Encoder's parameters
 
 ### Testing parameters
 
-PATH_OF_THE_MODEL_TO_TEST = 'models/fine-tuned_model.pth'
+PATH_OF_THE_MODEL_TO_TEST = "models/fine-tuned_model.pth"

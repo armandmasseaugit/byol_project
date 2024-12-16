@@ -10,7 +10,7 @@ class Encoder(nn.Module):
     def forward(self, x):
         return self.encoder(x)
 
-"""
+
 class Projector(nn.Module):
     def __init__(self, projector):
         super().__init__()
@@ -27,7 +27,7 @@ class Predictor(nn.Module):
 
     def forward(self, x):
         return self.prediction
-"""
+
 
 class BootstrapYourOwnLatent(nn.Module):
     def __init__(self, encoder, projector, predictor, loss_function, tau):
@@ -46,14 +46,18 @@ class BootstrapYourOwnLatent(nn.Module):
 
     def update_the_moving_average_for_the_encoder(self):
         with no_grad():
-            for theta, ksi in zip(self.online_encoder.parameters(), self.target_encoder.parameters()):
-                new_ksi = self.tau * ksi + (1-self.tau) * theta
+            for theta, ksi in zip(
+                self.online_encoder.parameters(), self.target_encoder.parameters()
+            ):
+                new_ksi = self.tau * ksi + (1 - self.tau) * theta
                 ksi.data = new_ksi
 
     def update_the_moving_average_for_the_projector(self):
         with no_grad():
-            for theta, ksi in zip(self.online_projector.parameters(), self.target_projector.parameters()):
-                new_ksi = self.tau * ksi + (1-self.tau) * theta
+            for theta, ksi in zip(
+                self.online_projector.parameters(), self.target_projector.parameters()
+            ):
+                new_ksi = self.tau * ksi + (1 - self.tau) * theta
                 ksi.data = new_ksi
 
     def forward(self, v1, v2):
@@ -64,10 +68,12 @@ class BootstrapYourOwnLatent(nn.Module):
             target_prediction1 = self.target_projector(self.target_encoder(v1))
             target_prediction2 = self.target_projector(self.target_encoder(v2))
 
-        loss = self.loss_function(online_prediction1, target_prediction1).mean() + self.loss_function(
-            online_prediction2, target_prediction2
-        ).mean()
+        loss = (
+            self.loss_function(online_prediction1, target_prediction1).mean()
+            + self.loss_function(online_prediction2, target_prediction2).mean()
+        )
         return loss
+
 
 class FineTunedBootstrapYourOwnLatent(nn.Module):
     def __init__(self, encoder, fine_tuning_mlp):

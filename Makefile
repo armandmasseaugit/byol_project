@@ -39,8 +39,6 @@ format:
 	black --config pyproject.toml byol
 
 
-
-
 ## Set up python interpreter environment
 .PHONY: create_environment
 create_environment:
@@ -66,13 +64,13 @@ train:
 fine-tuning:
 	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
 
-.PHONY: test
-test:
+.PHONY: prediction
+prediction:
 	$(PYTHON_INTERPRETER) -m byol.modeling.test
 
-.PHONY: all
-all:
-	#$(PYTHON_INTERPRETER) -m byol.modeling.train
+.PHONY: run
+run:
+	$(PYTHON_INTERPRETER) -m byol.modeling.train
 	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
 	$(PYTHON_INTERPRETER) -m byol.modeling.test
 

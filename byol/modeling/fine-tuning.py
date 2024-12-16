@@ -4,18 +4,25 @@ from torch import device, cuda, save, max, load
 import torch.nn as nn
 from torchvision.transforms.v2 import ToTensor
 
-from byol.dataset import BYOLDataset
 from byol.modeling.model import FineTunedBootstrapYourOwnLatent, Encoder
-from byol.config import (encoder, NUM_EPOCHS, BATCH_SIZE, SHUFFLE, TAU,
-                         PATH_OF_THE_SAVED_MODEL_PARAMETERS, fine_tuning_mlp)
+from byol.config import (
+    encoder,
+    NUM_EPOCHS,
+    BATCH_SIZE,
+    SHUFFLE,
+    TAU,
+    PATH_OF_THE_SAVED_MODEL_PARAMETERS,
+    fine_tuning_mlp,
+)
 import torch.optim as optim
 
-encoder = Encoder(encoder)
-encoder.load_state_dict(load(PATH_OF_THE_SAVED_MODEL_PARAMETERS), strict=False)
+encoder_ = Encoder(encoder)
+
+encoder_.load_state_dict(load(PATH_OF_THE_SAVED_MODEL_PARAMETERS), strict=False)
 for param in encoder.parameters():
     param.requires_grad = False
 
-model = FineTunedBootstrapYourOwnLatent(encoder, fine_tuning_mlp)
+model = FineTunedBootstrapYourOwnLatent(encoder_, fine_tuning_mlp)
 
 device = device("cuda" if cuda.is_available() else "cpu")
 model = model.to(device)
@@ -57,4 +64,3 @@ state_dict = model.state_dict()
 state_dict_renamed = {k.replace("encoder.encoder", "encoder"): v for k, v in state_dict.items()}
 
 save(state_dict_renamed, "models/fine-tuned_model.pth")
-
