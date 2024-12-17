@@ -7,8 +7,8 @@ from byol.config import (
     ENCODER,
     PROJECTOR,
     PREDICTOR,
-    NUM_EPOCHS,
-    transforms,
+    NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING,
+    TRANSFORMS,
     BATCH_SIZE,
     SHUFFLE,
     TAU,
@@ -25,7 +25,7 @@ device = device("cuda" if cuda.is_available() else "cpu")
 model = model.to(device)
 
 dataset = MNIST(root="data/raw", train=True, download=True)
-transformed_dataset = BYOLDataset(dataset, transforms)
+transformed_dataset = BYOLDataset(dataset, TRANSFORMS)
 # TODO: add the downloading of processed data at data/processed
 train_dataloader = DataLoader(dataset=transformed_dataset, batch_size=BATCH_SIZE, shuffle=SHUFFLE)
 
@@ -35,7 +35,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.0003)
 
 total_loss = 0
 model.train()
-for epoch in range(NUM_EPOCHS):
+for epoch in range(NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING):
     for index, (view1, view2, label) in enumerate(train_dataloader):
 
         # image1, image2 = image1.cuda(), image2.cuda()
@@ -50,7 +50,7 @@ for epoch in range(NUM_EPOCHS):
         total_loss += loss.item()
         if index % 100 == 0:
             print(
-                f"Epoch [{epoch + 1}/{NUM_EPOCHS}], Iter [{index + 1}/{len(train_dataloader)}], Loss: {loss.item():.4f}"
+                f"Epoch [{epoch + 1}/{NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING}], Iter [{index + 1}/{len(train_dataloader)}], Loss: {loss.item():.4f}"
             )
     print(f"Epoch {epoch+1} completed. Average loss: {total_loss/len(train_dataloader):.4f}")
 print("Training ended !")

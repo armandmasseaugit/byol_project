@@ -1,6 +1,7 @@
 import torch.nn as nn
 from torchvision import transforms
 
+
 #################################################################################
 # Global Parameters and Configuration                                            #
 #################################################################################
@@ -65,10 +66,14 @@ FINE_TUNING_MLP = nn.Sequential(
 # Training Parameters                                                            #
 #################################################################################
 
-NUM_EPOCHS = 10  # Number of training epochs
+NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING = 2  # Number of training epochs
 PATH_OF_THE_SAVED_MODEL_PARAMETERS = (
     "models/trained_byol_model.pth"  # Path to save the pre-trained encoder's parameters
 )
+
+NUM_EPOCHS_OF_THE_FINE_TUNING_TRAINING = 1
+
+PATH_OF_THE_SAVED_FINE_TUNING_PARAMETERS = "models/fine-tuned_model.pth"
 
 #################################################################################
 # Testing Parameters                                                             #

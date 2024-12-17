@@ -3,21 +3,18 @@ from torch import load, no_grad, device, cuda, max
 from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
-from byol.dataset import BYOLDataset
 
 from byol.config import (
     ENCODER,
-    NUM_EPOCHS,
-    TRANSFORMS,
     BATCH_SIZE,
     SHUFFLE,
-    TAU,
     PATH_OF_THE_MODEL_TO_TEST,
     FINE_TUNING_MLP,
 )
 
 encoder = Encoder(ENCODER)
 model = FineTunedBootstrapYourOwnLatent(encoder, FINE_TUNING_MLP)
+
 model.load_state_dict(load(PATH_OF_THE_MODEL_TO_TEST))
 
 device = device("cuda" if cuda.is_available() else "cpu")

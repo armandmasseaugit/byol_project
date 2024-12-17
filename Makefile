@@ -66,13 +66,13 @@ fine-tuning:
 
 .PHONY: prediction
 prediction:
-	$(PYTHON_INTERPRETER) -m byol.modeling.test
+	$(PYTHON_INTERPRETER) -m byol.modeling.predict
 
 .PHONY: run
 run:
 	$(PYTHON_INTERPRETER) -m byol.modeling.train
 	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
-	$(PYTHON_INTERPRETER) -m byol.modeling.test
+	$(PYTHON_INTERPRETER) -m byol.modeling.predict
 
 
 
