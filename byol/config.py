@@ -1,33 +1,31 @@
-from torchvision import transforms
 import torch.nn as nn
+from torchvision import transforms
 
-# Here are stored the parameters
+#################################################################################
+# Global Parameters and Configuration                                            #
+#################################################################################
 
-### Data transformation parameters
-
-# The transformations of the dataset in order to create two views
-transforms = transforms.Compose(
+# Data Transformation Parameters
+# These transformations are applied to each view of the dataset
+TRANSFORMS = transforms.Compose(
     [
         transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),
         transforms.ToTensor(),
-        # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # ImageNet parameters
     ]
 )
 
-BATCH_SIZE = 64  # 512
+BATCH_SIZE = 64  # Batch size for training (adjustable)
+SHUFFLE = True  # Whether to shuffle the dataset
 
-SHUFFLE = True
+#################################################################################
+# Model Architecture Parameters                                                  #
+#################################################################################
 
-### Model parameters
-
-# Parameter of the moving average
+# Moving Average Parameter for Momentum (used in BYOL)
 TAU = 0.9
 
-# Optimizer
-LEARNING_RATE = 0.0003
-
-# Encoder (from view to representation)
-encoder = nn.Sequential(
+# Encoder network (converts image to representation)
+ENCODER = nn.Sequential(
     nn.Conv2d(1, 6, kernel_size=5),  # (batch_size, 6, 24, 24)
     nn.ReLU(),
     nn.MaxPool2d(2),  # (batch_size, 6, 12, 12)
@@ -40,41 +38,42 @@ encoder = nn.Sequential(
     nn.Linear(120, 64),
 )
 
-PROJECTION_DIM = 32  # >128 for the moment
-
-# Projector
-projector = nn.Sequential(
+# Projection head (projects the encoder's output to a smaller space)
+PROJECTION_DIM = 32  # The dimension of the projection space (typically >128)
+PROJECTOR = nn.Sequential(
     nn.Linear(64, PROJECTION_DIM),
     nn.ReLU(),
 )
-# Predictor
-predictor = nn.Sequential(
+
+# Predictor network (used to predict the projected representations of the target network)
+PREDICTOR = nn.Sequential(
     nn.Linear(PROJECTION_DIM, 32),
     nn.ReLU(),
     nn.Linear(32, PROJECTION_DIM),
 )
 
-# Fine-tuning mlp
-fine_tuning_mlp = nn.Sequential(
+# Fine-tuning MLP (for supervised fine-tuning after pre-training)
+FINE_TUNING_MLP = nn.Sequential(
     nn.Linear(64, 32),
     nn.ReLU(),
-    nn.Linear(32, 10),
+    nn.Linear(32, 10),  # 10 output units for classification (MNIST)
     # nn.Softmax(dim=-1)
 )
 
 
-# Loss function
-def loss_function(x, y):
-    x = nn.functional.normalize(x, dim=-1)
-    y = nn.functional.normalize(y, dim=-1)
-    return 2 - 2 * (x * y).sum(dim=-1)
+#################################################################################
+# Training Parameters                                                            #
+#################################################################################
 
+NUM_EPOCHS = 10  # Number of training epochs
+PATH_OF_THE_SAVED_MODEL_PARAMETERS = (
+    "models/trained_byol_model.pth"  # Path to save the pre-trained encoder's parameters
+)
 
-### Training parameters
+#################################################################################
+# Testing Parameters                                                             #
+#################################################################################
 
-NUM_EPOCHS = 10
-PATH_OF_THE_SAVED_MODEL_PARAMETERS = "models/trained_byol_model.pth"  # Encoder's parameters
-
-### Testing parameters
-
-PATH_OF_THE_MODEL_TO_TEST = "models/fine-tuned_model.pth"
+PATH_OF_THE_MODEL_TO_TEST = (
+    "models/fine-tuned_model.pth"  # Path to load the fine-tuned model for evaluation
+)

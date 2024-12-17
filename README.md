@@ -4,9 +4,14 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-computer vision mnist
+computer vision using BYOL on MNIST dataset
 
-
+Useful commands :
+- make run : downloads the dataset if not already done, trains the model with the BYOL technique, fine-tunes it and evaluates the model by predicting outputs on unseen data.
+- make dataset : only downloads the dataset if not already done.
+- make train : only trains the model.
+- make fine-tuning : only fine-tunes the model.
+- make predict : only predicts outputs on unseen data.
 
 ## Project Organization
 

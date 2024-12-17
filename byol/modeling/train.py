@@ -4,10 +4,9 @@ from torch import device, cuda, save
 from byol.dataset import BYOLDataset
 from byol.modeling.model import BootstrapYourOwnLatent, Encoder, Projector, Predictor
 from byol.config import (
-    encoder,
-    projector,
-    predictor,
-    loss_function,
+    ENCODER,
+    PROJECTOR,
+    PREDICTOR,
     NUM_EPOCHS,
     transforms,
     BATCH_SIZE,
@@ -17,11 +16,11 @@ from byol.config import (
 )
 import torch.optim as optim
 
-encoder_ = Encoder(encoder)
-projector_ = Projector(projector)
-predictor_ = Predictor(predictor)
+encoder = Encoder(ENCODER)
+projector = Projector(PROJECTOR)
+predictor = Predictor(PREDICTOR)
 
-model = BootstrapYourOwnLatent(encoder_, projector_, predictor_, loss_function, TAU)
+model = BootstrapYourOwnLatent(encoder, projector, predictor, TAU)
 device = device("cuda" if cuda.is_available() else "cpu")
 model = model.to(device)
 

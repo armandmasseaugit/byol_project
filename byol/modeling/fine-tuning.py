@@ -6,23 +6,23 @@ from torchvision.transforms.v2 import ToTensor
 
 from byol.modeling.model import FineTunedBootstrapYourOwnLatent, Encoder
 from byol.config import (
-    encoder,
+    ENCODER,
     NUM_EPOCHS,
     BATCH_SIZE,
     SHUFFLE,
     TAU,
     PATH_OF_THE_SAVED_MODEL_PARAMETERS,
-    fine_tuning_mlp,
+    FINE_TUNING_MLP,
 )
 import torch.optim as optim
 
-encoder_ = Encoder(encoder)
+encoder = Encoder(ENCODER)
 
-encoder_.load_state_dict(load(PATH_OF_THE_SAVED_MODEL_PARAMETERS), strict=False)
+encoder.load_state_dict(load(PATH_OF_THE_SAVED_MODEL_PARAMETERS), strict=False)
 for param in encoder.parameters():
     param.requires_grad = False
 
-model = FineTunedBootstrapYourOwnLatent(encoder_, fine_tuning_mlp)
+model = FineTunedBootstrapYourOwnLatent(encoder, FINE_TUNING_MLP)
 
 device = device("cuda" if cuda.is_available() else "cpu")
 model = model.to(device)
