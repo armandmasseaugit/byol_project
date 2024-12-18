@@ -33,12 +33,12 @@ print(len(train_dataloader))
 
 optimizer = optim.Adam(model.parameters(), lr=0.0003)
 
-total_loss = 0
 model.train()
 for epoch in range(NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING):
+    total_loss = 0
     for index, (view1, view2, label) in enumerate(train_dataloader):
 
-        # image1, image2 = image1.cuda(), image2.cuda()
+        view1, view2 = view1.to(device), view2.to(device)
         optimizer.zero_grad()
         loss = model(view1, view2)
 

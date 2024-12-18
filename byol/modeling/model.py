@@ -87,7 +87,7 @@ class FineTunedBootstrapYourOwnLatent(nn.Module):
         self.encoder = encoder
 
     def forward(self, x):
-        with no_grad():
-            x = self.encoder(x)
+        #with no_grad():
+        x = self.encoder(x)
         x = self.mlp(x)
         return x

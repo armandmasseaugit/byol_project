@@ -29,7 +29,7 @@ model = model.to(device)
 dataset = MNIST(root="data/raw", train=True, download=True, transform=ToTensor())
 train_loader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=SHUFFLE)
 
-optimizer = optim.SGD(model.mlp.parameters(), lr=1e-3, momentum=0.9)
+optimizer = optim.Adam(model.parameters(), lr=1e-3) # .mlp.
 
 criterion = nn.CrossEntropyLoss()
 
