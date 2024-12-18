@@ -10,7 +10,6 @@ from byol.config import (
     NUM_EPOCHS_OF_THE_FINE_TUNING_TRAINING,
     BATCH_SIZE,
     SHUFFLE,
-    TAU,
     PATH_OF_THE_SAVED_MODEL_PARAMETERS,
     FINE_TUNING_MLP,
     PATH_OF_THE_SAVED_FINE_TUNING_PARAMETERS,
@@ -29,7 +28,7 @@ model = model.to(device)
 dataset = MNIST(root="data/raw", train=True, download=True, transform=ToTensor())
 train_loader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=SHUFFLE)
 
-optimizer = optim.Adam(model.parameters(), lr=1e-3) # .mlp.
+optimizer = optim.Adam(model.parameters(), lr=1e-3)  # .mlp.
 
 criterion = nn.CrossEntropyLoss()
 
@@ -58,7 +57,9 @@ for epoch in range(NUM_EPOCHS_OF_THE_FINE_TUNING_TRAINING):
     epoch_loss = running_loss / len(train_loader)
     epoch_acc = correct / total * 100
 
-    print(f"Epoch [{epoch+1}/{NUM_EPOCHS_OF_THE_FINE_TUNING_TRAINING}], Loss: {epoch_loss:.4f}, Accuracy: {epoch_acc:.2f}%")
+    print(
+        f"Epoch [{epoch+1}/{NUM_EPOCHS_OF_THE_FINE_TUNING_TRAINING}], Loss: {epoch_loss:.4f}, Accuracy: {epoch_acc:.2f}%"
+    )
 
 encoder_parameters_after_training = list(model.encoder.parameters())
 

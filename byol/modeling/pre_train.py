@@ -29,8 +29,6 @@ transformed_dataset = BYOLDataset(dataset, TRANSFORMS)
 # TODO: add the downloading of processed data at data/processed
 train_dataloader = DataLoader(dataset=transformed_dataset, batch_size=BATCH_SIZE, shuffle=SHUFFLE)
 
-print(len(train_dataloader))
-
 optimizer = optim.Adam(model.parameters(), lr=0.0003)
 
 model.train()

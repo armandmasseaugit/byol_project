@@ -66,7 +66,7 @@ FINE_TUNING_MLP = nn.Sequential(
     nn.Linear(32, 16),
     nn.ReLU(),
     nn.Linear(16, 10),  # 10 output units for classification (MNIST)
-    #nn.Softmax(dim=-1) # No softmax function needs to be added bc the crossentropy loss already applies a softmax fnction
+    # nn.Softmax(dim=-1) # No softmax function needs to be added bc the crossentropy loss already applies a softmax fnction
 )
 
 
@@ -74,7 +74,7 @@ FINE_TUNING_MLP = nn.Sequential(
 # Training Parameters                                                            #
 #################################################################################
 
-NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING = 10 # Number of training epochs
+NUM_EPOCHS_OF_THE_UNSUPERVISED_TRAINING = 10  # Number of training epochs
 PATH_OF_THE_SAVED_MODEL_PARAMETERS = (
     "models/trained_byol_model.pth"  # Path to save the pre-trained encoder's parameters
 )

@@ -56,13 +56,13 @@ create_environment:
 dataset:
 	$(PYTHON_INTERPRETER) -m byol.dataset
 
-.PHONY: train
-train:
-	$(PYTHON_INTERPRETER) -m byol.modeling.train
+.PHONY: pre_train
+pre_train:
+	$(PYTHON_INTERPRETER) -m byol.modeling.pre_train
 
-.PHONY: fine-tuning
-fine-tuning:
-	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
+.PHONY: fine_tune
+fine_tune:
+	$(PYTHON_INTERPRETER) -m byol.modeling.fine_tune
 
 .PHONY: prediction
 prediction:
@@ -70,8 +70,8 @@ prediction:
 
 .PHONY: run
 run:
-	$(PYTHON_INTERPRETER) -m byol.modeling.train
-	$(PYTHON_INTERPRETER) -m byol.modeling.fine-tuning
+	$(PYTHON_INTERPRETER) -m byol.modeling.pre_train
+	$(PYTHON_INTERPRETER) -m byol.modeling.fine_tune
 	$(PYTHON_INTERPRETER) -m byol.modeling.predict
 
 
